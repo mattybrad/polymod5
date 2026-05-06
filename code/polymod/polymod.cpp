@@ -18,7 +18,7 @@ int main()
     stdio_init_all();
     audio.init();
 
-    printf("Hello, Polymod!\n");
+    printf("\n\nHello, Polymod!\n\n");
 
     // Map physical patchbay connections to module inputs/outputs
     patchbay.setSocket(0, vco.getSocket(VCO::FREQ_IN));
@@ -26,14 +26,16 @@ int main()
     patchbay.setSocket(2, vco.getSocket(VCO::SAW_OUT));
     patchbay.setSocket(3, io.getSocket(IO::MAIN_AUDIO_IN));
 
+    patchbay.simulateConnection(1, 3);
+
+    io.getSocket(IO::MAIN_AUDIO_IN)->setOrder(0);
+    patchbay.orderSockets();
+
     int dacIntervalUs = audio.dacIntervalUs();
     int16_t testSample = 0;
     while (true) {
         while(audio.samplesRequired()) {
-            testSample += 25;
-            if (testSample > 8192) {
-                testSample = -8192;
-            }
+            
             audio.queueSample(testSample, testSample);
         }
         audio.update();
