@@ -1,0 +1,1 @@
+For first iteration, just use mono signals with no splitting/mixing/loops.
